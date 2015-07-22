@@ -10,6 +10,7 @@
   var socket = io.connect('http://' + document.domain + ':' + location.port);
 </script>
 <body>
+  My userid: {{ call_api('/login') }} <br>
   {% include "example_component.html" %}
   {% include "negative_counter.html" %}
 </body>

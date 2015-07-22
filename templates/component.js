@@ -9,3 +9,7 @@ socket.on('data', function(data) {
     console.log('***', component_name, 'on data', data);
     setData(data)
 });
+
+socket.on('message', function(data) {
+    console.log('*** Got message', data);
+});

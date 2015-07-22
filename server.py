@@ -1,4 +1,5 @@
 import flask
+import uuid
 from flask.ext.socketio import SocketIO, join_room, leave_room, send
 app = flask.Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -13,6 +14,11 @@ def index():
     global count
     return flask.render_template("index.html")
 
+@app.route('/login')
+def login():
+    if flask.session.get('userid') is None:
+        flask.session['userid'] = str(uuid.uuid1())
+    return flask.session['userid']
 
 @app.route('/api/set')
 def set():
@@ -57,6 +63,10 @@ def handle_message(message):
 def on_connect():
     print "connect"
 
+@socketio.on('get_userid')
+def get_userid():
+    print "get userid"
+    socketio.send({"userid": flask.session['userid']}, json=True)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5001)
